@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Model\User;
+use App\Services\ProductService;
 use App\Support\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
@@ -10,10 +11,12 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     private $__user;
+    private $__productService;
 
-    public function __construct(User $user)
+    public function __construct(User $user, ProductService $productService)
     {
         $this->__user = $user;
+        $this->__productService = $productService;
     }
 
     public function getList(Request $request){
@@ -54,6 +57,41 @@ class ProductController extends Controller
 
 
         return Response::response($response_data);
+    }
+
+    public function addProduct(Request $request){
+
+        $addProduct = $this->__productService->createProduct($request);
+
+        if($addProduct['success'] == 0){
+            $response = Response::$error;
+            $response['message'] = $addProduct['message'];
+        }
+        else{
+            $response = Response::$success;
+            $response['message'] = $addProduct['message'];
+
+            $data = [];
+            $data['product_name'] = $addProduct['product']['name'];
+            $data['product_code'] = $addProduct['product']['code'];
+            $data['product_qty'] = $addProduct['product']['qty'];
+            $data['product_price'] = $addProduct['product']['price'];
+            $data['product_unit'] = $addProduct['product']['unit'];
+            $data['product_discount_rate'] = $addProduct['product']['discount_rate'];
+            $data['product_discount_price'] = (string) $addProduct['product']['discount_price'];
+            $data['product_medias'] = [];
+
+            if($addProduct['product']['medias']){
+                $arrImage = explode(';',$addProduct['product']['medias']);
+                foreach ($arrImage as $value){
+                    if($value){
+                        $data['product_medias'][] = url('storage/upload').'/'.$value;
+                    }
+                }
+            }
+            $response['data'] = $data;
+        }
+        return Response::response($response);
     }
 }
 
