@@ -19,8 +19,19 @@ Route::group(['middleware' => ['apiMiddleware'],'prefix' => 'api'], function () 
     Route::post('product/list','App\Http\Controllers\Api\ProductController@getList'); //done
 
     //api add product
-    Route::any('add-product','App\Http\Controllers\Api\ProductController@addProduct'); //done
+    Route::post('product/add','App\Http\Controllers\Api\ProductController@addProduct'); //done
 
+    //edit product
+    Route::post('product/edit','App\Http\Controllers\Api\ProductController@editProduct'); //done
+
+    // add customer
+    Route::post('customer/add','App\Http\Controllers\Api\CustomerController@addCustomer'); //done
+
+    //list customer
+    Route::post('customer/list','App\Http\Controllers\Api\CustomerController@getList'); //done
+
+    //edit customer
+    Route::post('customer/edit','App\Http\Controllers\Api\CustomerController@editCustomer'); //done
 
 
 

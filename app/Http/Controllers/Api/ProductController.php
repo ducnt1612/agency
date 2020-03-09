@@ -20,48 +20,83 @@ class ProductController extends Controller
     }
 
     public function getList(Request $request){
+
+        // lay ra nguoi dung dang nhap
+        $user = $this->__user->searchByCondition([
+            'token' => $request->bearerToken(),
+            'is_first' => 1,
+        ]);
+        $user = $user['result'];
+
         // nhận dữ liệu gửi lên
-        $account = $request->input('user_name');
-        $password = $request->input('password');
-        $arrGetUser = [
-            'user_name' => $account,
-            'is_first' => 1
+
+        $productName = $request->input('product_name');
+        $code = $request->input('code');
+        $page = $request->json('page', 1);
+
+        $limit = 10;
+        $offset = ($page - 1) * $limit;
+        $arrGetProduct = [
+            'name' => $productName,
+            'code' => $code,
+            'total' => 1,
+            'limit' => $limit,
+            'offset' => $offset,
+            'user_id' => $user->id
         ];
-        $getUser = $this->__user->searchByCondition($arrGetUser);
-        $getUser = $getUser['result'];
-        if(!$getUser)
-        {
-            $response=Response::$error_login;
-            $response['message']="Tài khoản không tồn tại !";
-            return Response::response($response);
-        }
+        $products = $this->__productService->getList($arrGetProduct);
+        if($products['success'] == 1){
+            $response = Response::$success;
+            $response['message'] = 'Lấy danh sách sản phẩm thành công';
+            $response['total_page'] = ceil($products['total'] / $limit);
+            $data = [];
+            foreach ($products['result'] as $key => $value){
+                $item = [];
+                $item['stt'] = $offset + $key + 1;
+                $item['product_id'] = $value->id;
+                $item['product_name'] = $value->name;
+                $item['product_code'] = $value->code;
+                $item['product_price'] = $value->price;
+                $item['product_qty'] = $value->price;
+                $item['product_discount_rate'] = $value->discount_rate;
+                $item['product_discount_price'] = $value->price - $value->price * $value->discount_rate / 100;
 
+                if($value->medias){
+                    $arrImageConvert = [];
+                    $arrImage = explode(';',$value->medias);;
+                    foreach ($arrImage as $valueI){
+                        if($valueI){
+                            $arrImageConvert[] = url('storage/upload').'/'.$valueI;
+                        }
+                    }
+                    $item['medias'] = $arrImageConvert;
+                }
+                else{
+                    $item['medias'] = '';
+                }
 
-        if(isset($getUser->id)){
-            if (!Hash::check($password, $getUser->password)) {
-                $response = Response::$error_permission;
-                $response['message'] = "Mật khẩu không chính xác!";
-                return Response::response($response);
+                $data[] = $item;
             }
+            $response['data'] = $data;
 
-            unset($getUser['password']);
-
-            $response_data = Response::$success;
-            $response_data['data'] = $getUser;
-            $response_data['message'] = 'Đăng nhập thành công';
         }
         else{
-            $response_data = Response::$error_login;
-            $response_data['message'] = 'Không tồn tại tài khoản';
+            $response = Response::$error;
+            $response['message'] = 'Lấy danh sách sản phẩm không thành công';
         }
 
 
-        return Response::response($response_data);
+        return Response::response($response);
     }
 
     public function addProduct(Request $request){
-
-        $addProduct = $this->__productService->createProduct($request);
+        // lay ra nguoi dung dang nhap
+        $user = $this->__user->searchByCondition([
+            'token' => $request->bearerToken(),
+            'is_first' => 1,
+        ]);
+        $user = $user['result'];
+        $addProduct = $this->__productService->createProduct($request, $user);
 
         if($addProduct['success'] == 0){
             $response = Response::$error;
@@ -89,6 +124,48 @@ class ProductController extends Controller
                     }
                 }
             }
+            $response['data'] = $data;
+        }
+        return Response::response($response);
+    }
+
+    public function editProduct(Request $request){
+        // lay ra nguoi dung dang nhap
+        $user = $this->__user->searchByCondition([
+            'token' => $request->bearerToken(),
+            'is_first' => 1,
+        ]);
+        $user = $user['result'];
+
+        // kiểm tra sản phẩm có thuộc đại lý đó không
+        $updateProduct = $this->__productService->editProduct($request, $user);
+
+        if($updateProduct['success'] == 0){
+            $response = Response::$error;
+            $response['message'] = $updateProduct['message'];
+        }
+        else{
+            $response = Response::$success;
+            $response['message'] = $updateProduct['message'];
+            $data = [];
+            $data['product_name'] = $updateProduct['product']['name'];
+            $data['product_code'] = $updateProduct['product']['code'];
+            $data['product_qty'] = $updateProduct['product']['qty'];
+            $data['product_price'] = $updateProduct['product']['price'];
+            $data['product_unit'] = $updateProduct['product']['unit'];
+            $data['product_discount_rate'] = $updateProduct['product']['discount_rate'];
+            $data['product_discount_price'] = (string) $updateProduct['product']['discount_price'];
+            $data['product_medias'] = [];
+
+            if($updateProduct['product']['medias']){
+                $arrImage = explode(';',$updateProduct['product']['medias']);
+                foreach ($arrImage as $value){
+                    if($value){
+                        $data['product_medias'][] = url('storage/upload').'/'.$value;
+                    }
+                }
+            }
+
             $response['data'] = $data;
         }
         return Response::response($response);

@@ -11,7 +11,7 @@ use App\Model\BaseModel;
 
 
 class Product extends BaseModel {
-    protected $fillable = array('name', 'code', 'medias', 'qty', 'price', 'discount_rate', 'discount_price','unit',
+    protected $fillable = array('name', 'user_id', 'code', 'medias', 'qty', 'price', 'discount_rate', 'discount_price','unit','status',
      'created_at', 'updated_at');
 
     public function searchByCondition($dataSearch = array())
@@ -21,19 +21,33 @@ class Product extends BaseModel {
         try {
             $query = self::where('id', '>', 0);
 
-
-            if(isset($dataSearch['user_name'])){
-                if(is_array($dataSearch['user_name'])){
-                    $query->whereIn('user_name',$dataSearch['user_name']);
+            if(isset($dataSearch['user_id'])){
+                if(is_array($dataSearch['user_id'])){
+                    $query->whereIn('user_id',$dataSearch['user_id']);
                 }
-                else if ($dataSearch['user_name'] !== ''){
-                    $query->where('user_name',$dataSearch['user_name']);
+                else if ($dataSearch['user_id'] !== ''){
+                    $query->where('user_id',$dataSearch['user_id']);
                 }
             }
 
-            if(isset($dataSearch['total']) && $dataSearch['total'] = 1){
-                $total = $query->count();
+            if(isset($dataSearch['name'])){
+                if(is_array($dataSearch['name'])){
+                    $query->whereIn('name',$dataSearch['name']);
+                }
+                else if ($dataSearch['name'] !== ''){
+                    $query->where('name','LIKE', '%'.$dataSearch['name'].'%');
+                }
             }
+            if(isset($dataSearch['code'])){
+                if(is_array($dataSearch['code'])){
+                    $query->whereIn('code',$dataSearch['code']);
+                }
+                else if ($dataSearch['code'] !== ''){
+                    $query->where('code',$dataSearch['code']);
+                }
+            }
+
+
 
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',', trim($dataSearch['field_get'])) : array();
             if (isset($dataSearch['paginate']) && $dataSearch['paginate'] == 1) {
@@ -48,6 +62,12 @@ class Product extends BaseModel {
                     }
 
                 } else {
+                    if(isset($dataSearch['total']) && $dataSearch['total'] = 1){
+                        $total = $query->count();
+                    }
+                    if(isset($dataSearch['limit'])){
+                        $query->limit($dataSearch['limit'])->offset($dataSearch['offset']);
+                    }
                     if (!empty($fields)) {
                         $result = $query->get($fields);
                     } else {
