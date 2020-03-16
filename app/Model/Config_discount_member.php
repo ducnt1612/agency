@@ -10,9 +10,8 @@ namespace App\Model;
 use App\Model\BaseModel;
 
 
-class Product extends BaseModel {
-    protected $fillable = array('name', 'user_id', 'code', 'medias', 'qty', 'qty_pending', 'price', 'discount_rate', 'discount_price','unit','status',
-     'created_at', 'updated_at');
+class Config_discount_member extends BaseModel {
+    protected $fillable = array('type', 'min_amount', 'discount_amount','user_id', 'created_at', 'updated_at');
 
     public function searchByCondition($dataSearch = array())
     {

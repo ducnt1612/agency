@@ -10,9 +10,14 @@ namespace App\Model;
 use App\Model\BaseModel;
 
 
-class Product extends BaseModel {
-    protected $fillable = array('name', 'user_id', 'code', 'medias', 'qty', 'qty_pending', 'price', 'discount_rate', 'discount_price','unit','status',
-     'created_at', 'updated_at');
+class Quote extends BaseModel {
+    protected $fillable = array('user_id', 'user_name', 'customer_id', 'customer_name', 'customer_phone', 'total_amount',
+        'shipping_address','note','discount_amount', 'total_amount_receive', 'status', 'created_at', 'updated_at');
+
+    public function quoteItem()
+    {
+        return $this->hasMany(QuoteItem::class);
+    }
 
     public function searchByCondition($dataSearch = array())
     {
@@ -91,13 +96,6 @@ class Product extends BaseModel {
                 'total' => $total
             ];
         }
-    }
-
-    public function isTokenValid($token, $userName){
-        $user = self::where('token',$token)
-            ->where('username',$userName)
-            ->first();
-        return $user;
     }
 
 

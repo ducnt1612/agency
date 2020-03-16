@@ -57,9 +57,12 @@ class ProductController extends Controller
                 $item['product_name'] = $value->name;
                 $item['product_code'] = $value->code;
                 $item['product_price'] = $value->price;
-                $item['product_qty'] = $value->price;
+                $item['product_qty'] = $value->qty;
+                $item['product_qty_pending'] = $value->qty_pending ? $value->qty_pending : '0';
+                $item['product_qty_available'] = (string) ((int) $value->qty - (int) $value->qty_pending);
+                $item['unit'] = $value->unit;
                 $item['product_discount_rate'] = $value->discount_rate;
-                $item['product_discount_price'] = $value->price - $value->price * $value->discount_rate / 100;
+                $item['product_discount_price'] = (string) ($value->price - $value->price * $value->discount_rate / 100);
 
                 if($value->medias){
                     $arrImageConvert = [];

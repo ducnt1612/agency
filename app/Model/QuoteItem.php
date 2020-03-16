@@ -10,9 +10,8 @@ namespace App\Model;
 use App\Model\BaseModel;
 
 
-class Product extends BaseModel {
-    protected $fillable = array('name', 'user_id', 'code', 'medias', 'qty', 'qty_pending', 'price', 'discount_rate', 'discount_price','unit','status',
-     'created_at', 'updated_at');
+class QuoteItem extends BaseModel {
+    protected $fillable = array('quote_id', 'product_id', 'product_name', "product_code", 'qty', 'price', 'created_at', 'updated_at');
 
     public function searchByCondition($dataSearch = array())
     {

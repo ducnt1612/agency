@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Model\Config_discount_member;
 use App\Model\Customer;
 use Illuminate\Http\Request;
 
@@ -70,6 +71,15 @@ class CustomerService {
         ];
     }
 
+    public function getDiscountMember($type, $agency){
+        return Config_discount_member::where('type',$type)
+            ->where('user_id',$agency->id)
+            ->first();
+    }
+
+    public function getCustomerById($customerId){
+        return Customer::find($customerId);
+    }
 
 
 

@@ -33,6 +33,18 @@ Route::group(['middleware' => ['apiMiddleware'],'prefix' => 'api'], function () 
     //edit customer
     Route::post('customer/edit','App\Http\Controllers\Api\CustomerController@editCustomer'); //done
 
+    //create quote
+    Route::post('quote/create','App\Http\Controllers\Api\QuoteController@createQuote'); //done
+
+    //delete quote items
+    Route::post('quote/delete-quote-item','App\Http\Controllers\Api\QuoteController@deleteQuoteItem'); //done
+
+    // list cau hinh tien khuyen mai theo loai khach hang
+    Route::post('config-discount-member/list','App\Http\Controllers\Api\ConfigDiscountMemberController@getList'); //done
+
+    // tao cau hinh khuyen mai
+    Route::post('config-discount-member/create','App\Http\Controllers\Api\ConfigDiscountMemberController@create'); //done
+
 
 
 
