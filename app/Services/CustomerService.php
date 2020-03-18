@@ -2,7 +2,10 @@
 namespace App\Services;
 
 use App\Model\Config_discount_member;
+use App\Model\Config_switch_point;
+use App\Model\Config_vip;
 use App\Model\Customer;
+use App\Model\Order;
 use Illuminate\Http\Request;
 
 class CustomerService {
@@ -81,6 +84,19 @@ class CustomerService {
         return Customer::find($customerId);
     }
 
+    public function getConfigPoint($userId){
+        return Config_switch_point::where('user_id',$userId)->first();
+    }
 
+    public function getConfigVip($userId){
+        return Config_vip::where('user_id',$userId)->first();
+    }
+
+    public function getTotalAmount($customerId, $agencyId){
+        return Order::where('user_id',$agencyId)
+            ->where('customer_id',$customerId)
+            ->where('status','hoan_thanh')
+            ->sum('total_amount_receive');
+    }
 
 }

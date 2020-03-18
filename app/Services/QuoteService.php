@@ -137,7 +137,7 @@ class QuoteService {
 
     }
 
-    private function checkIsAgencyQuote($quoteId, $agencyId, $customerId = 0){
+    public function checkIsAgencyQuote($quoteId, $agencyId, $customerId = 0){
         $quote = Quote::where('id',$quoteId)
             ->where('user_id',$agencyId)
             ->where('status','moi');
@@ -161,6 +161,13 @@ class QuoteService {
             return [
                 'success' => 0,
                 'message' => 'Sản phẩm không thuộc đại lý'
+            ];
+        }
+
+        if($product->status !== 'kha_dung'){
+            return [
+                'success' => 0,
+                'message' => 'Sản phẩm không còn khả dụng'
             ];
         }
 

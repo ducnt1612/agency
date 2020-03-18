@@ -40,13 +40,25 @@ Route::group(['middleware' => ['apiMiddleware'],'prefix' => 'api'], function () 
     Route::post('quote/delete-quote-item','App\Http\Controllers\Api\QuoteController@deleteQuoteItem'); //done
 
     // list cau hinh tien khuyen mai theo loai khach hang
-    Route::post('config-discount-member/list','App\Http\Controllers\Api\ConfigDiscountMemberController@getList'); //done
+    Route::post('config-discount-member/list','App\Http\Controllers\Api\ConfigController@getListConfigDiscountMember'); //done
 
     // tao cau hinh khuyen mai
-    Route::post('config-discount-member/create','App\Http\Controllers\Api\ConfigDiscountMemberController@create'); //done
+    Route::post('config-discount-member/create','App\Http\Controllers\Api\ConfigController@createConfigDiscountAmount'); //done
 
+    // cau hinh so tien de len vip
+    Route::get('config-vip/detail','App\Http\Controllers\Api\ConfigController@detailConfigVip'); //done
 
+    // cau hinh so tien de len vip
+    Route::post('config-vip/create','App\Http\Controllers\Api\ConfigController@createOrUpdateVip'); //done
 
+    // cau hinh so tien de voi mỗi điểm thưởng
+    Route::get('config-switch-point/detail','App\Http\Controllers\Api\ConfigController@detailConfigPoint'); //done
+
+    // cau hinh so tien de len vip
+    Route::post('config-switch-point/create','App\Http\Controllers\Api\ConfigController@createOrUpdatePoint'); //done
+
+    //create order
+    Route::post('order/create','App\Http\Controllers\Api\OrderController@createOrder'); //done
 
 });
 // đăng nhập

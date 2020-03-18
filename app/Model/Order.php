@@ -10,9 +10,14 @@ namespace App\Model;
 use App\Model\BaseModel;
 
 
-class Customer extends BaseModel {
-    protected $fillable = array('customer_name', 'user_id', 'customer_phone', 'customer_avatar', 'customer_type','customer_total_amount','is_vip','customer_point',
-     'created_at', 'updated_at');
+class Order extends BaseModel {
+    protected $fillable = array('quote_id', 'user_id', 'user_name', 'customer_id', 'customer_name', 'customer_phone', 'total_amount',
+        'shipping_address','note','discount_amount', 'total_amount_receive', 'status', 'created_at', 'updated_at', 'point_used');
+
+    public function item()
+    {
+        return $this->hasMany(Item::class);
+    }
 
     public function searchByCondition($dataSearch = array())
     {
@@ -30,20 +35,20 @@ class Customer extends BaseModel {
                 }
             }
 
-            if(isset($dataSearch['customer_name'])){
-                if(is_array($dataSearch['customer_name'])){
-                    $query->whereIn('customer_name',$dataSearch['customer_name']);
+            if(isset($dataSearch['name'])){
+                if(is_array($dataSearch['name'])){
+                    $query->whereIn('name',$dataSearch['name']);
                 }
-                else if ($dataSearch['customer_name'] !== ''){
-                    $query->where('customer_name','LIKE', '%'.$dataSearch['customer_name'].'%');
+                else if ($dataSearch['name'] !== ''){
+                    $query->where('name','LIKE', '%'.$dataSearch['name'].'%');
                 }
             }
-            if(isset($dataSearch['customer_phone'])){
-                if(is_array($dataSearch['customer_phone'])){
-                    $query->whereIn('customer_phone',$dataSearch['customer_phone']);
+            if(isset($dataSearch['code'])){
+                if(is_array($dataSearch['code'])){
+                    $query->whereIn('code',$dataSearch['code']);
                 }
-                else if ($dataSearch['customer_phone'] !== ''){
-                    $query->where('customer_phone',$dataSearch['customer_phone']);
+                else if ($dataSearch['code'] !== ''){
+                    $query->where('code',$dataSearch['code']);
                 }
             }
 
@@ -91,13 +96,6 @@ class Customer extends BaseModel {
                 'total' => $total
             ];
         }
-    }
-
-    public function isTokenValid($token, $userName){
-        $user = self::where('token',$token)
-            ->where('username',$userName)
-            ->first();
-        return $user;
     }
 
 
