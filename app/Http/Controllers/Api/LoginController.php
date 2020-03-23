@@ -21,7 +21,7 @@ class LoginController extends Controller
         $account = $request->input('user_name');
         $password = $request->input('password');
         $arrGetUser = [
-            'user_name' => $account,
+            'username' => $account,
             'is_first' => 1
         ];
         $getUser = $this->__user->searchByCondition($arrGetUser);
