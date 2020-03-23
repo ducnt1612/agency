@@ -18,7 +18,7 @@ class LoginController extends Controller
 
     public function index(Request $request){
         // nhận dữ liệu gửi lên
-        $account = $request->input('user_name');
+        $account = $request->input('username');
         $password = $request->input('password');
         $arrGetUser = [
             'username' => $account,

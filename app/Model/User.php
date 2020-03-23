@@ -22,12 +22,12 @@ class User extends BaseModel {
             $query = self::where('id', '>', 0);
 
 
-            if(isset($dataSearch['user_name'])){
-                if(is_array($dataSearch['user_name'])){
-                    $query->whereIn('user_name',$dataSearch['user_name']);
+            if(isset($dataSearch['username'])){
+                if(is_array($dataSearch['username'])){
+                    $query->whereIn('username',$dataSearch['username']);
                 }
-                else if ($dataSearch['user_name'] !== ''){
-                    $query->where('user_name',$dataSearch['user_name']);
+                else if ($dataSearch['username'] !== ''){
+                    $query->where('username',$dataSearch['username']);
                 }
             }
 
