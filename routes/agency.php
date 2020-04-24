@@ -60,6 +60,11 @@ Route::group(['middleware' => ['apiMiddleware'],'prefix' => 'api'], function () 
     //create order
     Route::post('order/create','App\Http\Controllers\Api\OrderController@createOrder'); //done
 
+    // lấy ra lịch sử order
+    Route::post('order/list','App\Http\Controllers\Api\OrderController@getList'); //done
+
+    // lấy ra lịch sử order chi tiết
+    Route::get('order/detail/{id}','App\Http\Controllers\Api\OrderController@detail'); //done
 });
 // đăng nhập
 Route::any('api/login','App\Http\Controllers\Api\LoginController@index'); //done

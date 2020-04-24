@@ -34,6 +34,17 @@ class  OrderService {
 
     }
 
+    public function getList($params){
+        return app(Order::class)->searchByCondition($params);
+    }
+
+    public function detailOrder($orderId, $user){
+        return Order::where('user_id',$user->id)
+            ->where('id',$orderId)
+            ->with('item')
+            ->first();
+    }
+
     public function createOrderWithCustomer($params, $agency, $quote, $customer){
 
         $customerTotalAmount = $this->customerService->getTotalAmount($customer->id, $agency->id);

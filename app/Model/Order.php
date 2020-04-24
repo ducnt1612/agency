@@ -35,20 +35,25 @@ class Order extends BaseModel {
                 }
             }
 
-            if(isset($dataSearch['name'])){
-                if(is_array($dataSearch['name'])){
-                    $query->whereIn('name',$dataSearch['name']);
+            if(isset($dataSearch['customer_name'])){
+                if(is_array($dataSearch['customer_name'])){
+                    $query->whereIn('customer_name',$dataSearch['customer_name']);
                 }
-                else if ($dataSearch['name'] !== ''){
-                    $query->where('name','LIKE', '%'.$dataSearch['name'].'%');
+                else if ($dataSearch['customer_name'] !== '' && $dataSearch['customer_name'] !== 'all_order'){
+                    $query->where('customer_name','LIKE', '%'.$dataSearch['customer_name'].'%');
                 }
+
             }
-            if(isset($dataSearch['code'])){
-                if(is_array($dataSearch['code'])){
-                    $query->whereIn('code',$dataSearch['code']);
+            else{
+                $query->whereNull('customer_name');
+            }
+
+            if(isset($dataSearch['status'])){
+                if(is_array($dataSearch['status'])){
+                    $query->whereIn('status',$dataSearch['status']);
                 }
-                else if ($dataSearch['code'] !== ''){
-                    $query->where('code',$dataSearch['code']);
+                else if ($dataSearch['status'] !== ''){
+                    $query->where('status',$dataSearch['status']);
                 }
             }
 
