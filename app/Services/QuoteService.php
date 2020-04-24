@@ -238,6 +238,7 @@ class QuoteService {
             ]);
 
             DB::commit();
+            $quote->customer_point = 0;
             $quote->quoteItem;
             return [
                 'success' => 1,
@@ -275,6 +276,7 @@ class QuoteService {
             $this->createQuoteItem($params, $quote, $product);
             DB::commit();
 
+            $quote->customer_point = 0;
             $quote->quoteItem;
             return [
                 'success' => 1,
@@ -356,6 +358,7 @@ class QuoteService {
             ]);
 
             DB::commit();
+            $quote->customer_point = $customer->customer_point;
             $quote->quoteItem;
             return [
                 'success' => 1,
@@ -404,6 +407,7 @@ class QuoteService {
             $this->createQuoteItem($params, $quote, $product);
             DB::commit();
 
+            $quote->customer_point = $customer->customer_point;
             $quote->quoteItem;
             return [
                 'success' => 1,
