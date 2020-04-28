@@ -35,7 +35,7 @@ class ConfigDiscountMemeberService {
             ]);
 
             return [
-                'success' => 0,
+                'success' => 1,
                 'message' => "Cập nhật cấu hình chiết khấu thành công"
             ];
         }
