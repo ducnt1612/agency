@@ -36,7 +36,8 @@ class ConfigDiscountMemeberService {
 
             return [
                 'success' => 1,
-                'message' => "Cập nhật cấu hình chiết khấu thành công"
+                'message' => "Cập nhật cấu hình chiết khấu thành công",
+                'config' => $checkExistConfig
             ];
         }
         else{
