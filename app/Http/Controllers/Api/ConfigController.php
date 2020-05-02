@@ -117,10 +117,9 @@ class ConfigController extends Controller
         $user = $user['result'];
 
         $item = $this->__configDiscountMember->getConfigPointItem($user);
-
         $response = Response::$success;
         $response['message'] = $item ? 'Lấy cấu hình thành công' : "Chưa cấu hình điểm thưởng với đại lý";
-        if($item){
+        if(!$item){
             unset($response['data']);
         }
         else{
