@@ -120,7 +120,13 @@ class ConfigController extends Controller
 
         $response = Response::$success;
         $response['message'] = $item ? 'Lấy cấu hình thành công' : "Chưa cấu hình điểm thưởng với đại lý";
-        $response['data'] = $item ? $item : "";
+        if($item){
+            unset($response['data']);
+        }
+        else{
+            $response['data'] = $item;
+        }
+//        $response['data'] = $item ? $item : "";
 
         return Response::response($response);
     }
