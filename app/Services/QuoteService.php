@@ -369,6 +369,7 @@ class QuoteService {
         }
         catch (\Exception $exception){
             DB::rollback();
+            throw $exception;
             return [
                 'success' => 0,
                 'message' => 'Thêm sản phẩm vào giỏ hàng không thành công'
@@ -417,6 +418,7 @@ class QuoteService {
         }
         catch (\Exception $e){
             DB::rollback();
+            throw $e;
             return [
                 'success' => 0,
                 'message' => 'Thêm sản phẩm vào giỏ hàng không thành công'
