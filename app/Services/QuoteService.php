@@ -344,7 +344,7 @@ class QuoteService {
             foreach ($newQuoteItem as $key => $value){
                 $totalAmount += $value->price * $value->qty;
             }
-            $getDiscountByTypeCustomer = $this->customerService->getDiscountMember($customer->customer_type, $agency->id);
+            $getDiscountByTypeCustomer = $this->customerService->getDiscountMember($customer->customer_type, $agency);
             // nếu tổng số tiền lớn hơn số tiền tối thiểu được khuyến mãi của đơn hàng
             $discountAmount = 0;
             if(isset($getDiscountByTypeCustomer->id) && $totalAmount >= $getDiscountByTypeCustomer->min_amount){
@@ -369,7 +369,6 @@ class QuoteService {
         }
         catch (\Exception $exception){
             DB::rollback();
-            throw $exception;
             return [
                 'success' => 0,
                 'message' => 'Thêm sản phẩm vào giỏ hàng không thành công'
@@ -418,7 +417,6 @@ class QuoteService {
         }
         catch (\Exception $e){
             DB::rollback();
-            throw $e;
             return [
                 'success' => 0,
                 'message' => 'Thêm sản phẩm vào giỏ hàng không thành công'
