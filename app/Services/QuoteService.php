@@ -57,7 +57,7 @@ class QuoteService {
     }
 
     private function deleteItemWithCustomer($quote, $quoteItem, $product, $customer, $agency){
-        $getDiscountByTypeCustomer = $this->customerService->getDiscountMember($customer->customer_type, $agency->id);
+        $getDiscountByTypeCustomer = $this->customerService->getDiscountMember($customer->customer_type, $agency);
         // nếu tổng số tiền lớn hơn số tiền tối thiểu được khuyến mãi của đơn hàng
 
         $discountAmount = 0;

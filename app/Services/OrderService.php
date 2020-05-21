@@ -61,10 +61,11 @@ class  OrderService {
             ]);
         }
 
-        // tính lại số point
+        // tính lại số point và số tiền đã tiêu của khách
         if(isset($getConfigPoint->id)){
             $customer->update([
-                'customer_point' => $customer->customer_point + round($createOrder->total_amount_receive / $getConfigPoint->amount)
+                'customer_point' => $customer->customer_point + round($createOrder->total_amount_receive / $getConfigPoint->amount),
+                'customer_total_amount' => $createOrder->total_amount_receive
             ]);
         }
 
