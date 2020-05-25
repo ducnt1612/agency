@@ -65,7 +65,7 @@ class  OrderService {
         if(isset($getConfigPoint->id)){
             $customer->update([
                 'customer_point' => $customer->customer_point + round($createOrder->total_amount_receive / $getConfigPoint->amount),
-                'customer_total_amount' => $createOrder->total_amount_receive
+                'customer_total_amount' => $customer->customer_total_amount + $createOrder->total_amount_receive
             ]);
         }
 
